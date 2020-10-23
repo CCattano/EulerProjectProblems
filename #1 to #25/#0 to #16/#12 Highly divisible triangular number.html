@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+	<head></head>
+	<body>
+		<label id="result"></label>
+		<br />
+		<br />
+		<label id="time"></label>
+		<script>
+			console.clear();
+			var start = window.performance.now();
+			var finish;
+			
+			var factorCount = 0;
+			var triangleNum = 0;
+			for(let i = 1; factorCount < 500; i++) {
+				factorCount = 0;
+				triangleNum += i;
+				let limit = Math.round(Math.sqrt(triangleNum));
+				for(let ni = 1; ni <= limit; ni++) {
+					if(triangleNum % ni === 0) {
+						factorCount += 2;
+					}
+					if(factorCount > 500) {
+						finish = window.performance.now();
+						break;
+					}
+				}
+			}
+						
+			function getResultWithCommas(val) {
+            	let commaSeparatedResult = val.split("").reverse().map((o, i, a) => (i % 3 === 0) ? `${o},` : o).reverse().join("");
+				return commaSeparatedResult.endsWith(",") ? commaSeparatedResult.slice(0, -1) : commaSeparatedResult;
+			}
+			
+			document.getElementById("result").innerHTML = `First triangle number to have over five hundred divisors is ${getResultWithCommas(triangleNum.toString())}`;
+			document.getElementById("time").innerHTML = `Problem Solved In: ${(finish - start)}ms`;
+		</script>
+	</body>
+</html>

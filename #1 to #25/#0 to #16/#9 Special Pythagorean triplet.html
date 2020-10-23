@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+	<head></head>
+	<body>
+		<label>A Pythagorean triplet is a set of three natural numbers, a, b, and c;<label>
+		<br />
+		<br />
+		<label>where a &lt; b &lt; c, and, a2 + b2 = c2</label>
+		<br />
+		<br />
+		<br />
+		<label id="result-L1"></label>
+		<br />
+		<br />
+		<label id="result-L2"></label>
+		<br />
+		<br />
+		<br />
+		<label id="result-L3"></label>
+		<br />
+		<br />
+		<label id="time"></label>
+		<script>
+			console.clear();
+			var start = window.performance.now();
+			var finish;
+			var stay = true;
+			var factors;
+			var result;
+			for(let c = 3; stay; c++) {
+				for(let b = 2; b < c; b++) {
+					for(let a = 1; a < b; a++) {
+						if(Math.pow(a, 2) + Math.pow(b, 2) === Math.pow(c, 2)) {
+							if(a + b + c === 1000) {
+								finish = window.performance.now();							
+								factors = {"a": a, "b": b, "c": c};
+								result = a * b * c;
+								stay = false;
+							}
+						}
+					}
+				}
+			}			
+			function getResultWithCommas() {
+            	let commaSeparatedResult = result.toString().split("").reverse().map((o, i, a) => (i % 3 === 0) ? `${o},` : o).reverse().join("");
+				return commaSeparatedResult.endsWith(",") ? commaSeparatedResult.slice(0, -1) : commaSeparatedResult;
+			}
+			document.getElementById("result-L1").innerHTML = "The Pythagorean triplet for which a + b + c = 1000 is:";
+			document.getElementById("result-L2").innerHTML = `${Object.keys(factors).map(k => `${k} = ${factors[k]}, `).join("").slice(0, -2)}`;
+			document.getElementById("result-L3").innerHTML = `The product of these factors is ${getResultWithCommas()}`;
+			document.getElementById("time").innerHTML = `Problem Solved In: ${(finish - start)}ms`;
+		</script>
+	</body>
+</html>

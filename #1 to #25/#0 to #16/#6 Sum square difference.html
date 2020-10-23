@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+	<head></head>
+	<body>
+		<label id="result"></label>
+		<br />
+		<br />
+		<label id="time"></label>
+		<script>
+			console.clear();
+			var start = window.performance.now();
+			var finish;
+			
+			sumOfSquares = 0;
+			squareOfSum = 0;
+			
+			for(let i = 1; i <= 100; i++) {
+				sumOfSquares += Math.pow(i, 2);
+				squareOfSum += i;
+			}
+			squareOfSum = Math.pow(squareOfSum, 2);
+			
+			var result = Math.abs(sumOfSquares - squareOfSum);
+			
+			this.finish = window.performance.now();
+			
+			function getResultWithCommas() {
+                let commaSeparatedResult = result.toString().split("").reverse().map((o, i, a) => (i % 3 === 0) ? `${o},` : o).reverse().join("");
+				return commaSeparatedResult.endsWith(",") ? commaSeparatedResult.slice(0, -1) : commaSeparatedResult;
+			}
+			
+			document.getElementById("result").innerHTML = `Difference between the sum of the squares of the first one hundred natural numbers and the square of the sum is ${getResultWithCommas()}`;
+			document.getElementById("time").innerHTML = `Problem Solved In: ${(this.finish - this.start)}ms`;
+		</script>
+	</body>
+</html>

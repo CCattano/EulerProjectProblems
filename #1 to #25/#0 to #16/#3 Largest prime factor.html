@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+	<head></head>
+	<body>
+		<label id="result"></label>
+		<br />
+		<br />
+		<label id="time"></label>
+		<script>
+			console.clear();
+			var start = window.performance.now();
+			var finish;
+			
+			function getFactors(baseNumber) {
+				let result = 0;
+				let stay = true;
+				let i = 2;
+				while(stay)
+				{
+					if(baseNumber % i == 0) {
+						result = i;
+						stay = false;
+					} else {
+						i++;
+					}
+				}
+				return result;
+			}
+			
+			var stay = true;
+			var result = 0;
+			var initialVal = 600851475143;
+			var val = initialVal;
+			while(stay)
+			{
+				this.result = getFactors(this.val);
+				if(this.result == this.val) {
+					this.finish = window.performance.now();
+					this.stay = false;
+				} else {
+					this.val = this.val / this.result;
+				}
+			}
+
+			//console.timeEnd("Problem Three Solved In");
+			document.getElementById("result").innerHTML = `Largest prime factor of ${initialVal} is ${this.result}`;
+			document.getElementById("time").innerHTML = `Problem Solved In: ${(this.finish - this.start)}ms`;
+		</script>
+	</body>
+</html>

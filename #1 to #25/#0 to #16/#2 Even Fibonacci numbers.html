@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+	<head></head>
+	<body>
+		<label id="result"></label>
+		<br />
+		<br />
+		<label id="time"></label>
+		<script>
+			console.clear();
+			var start = window.performance.now();
+			var finish;
+			
+			let term1 = 1;
+			let term2 = 2;
+			let currentTerm = 0;
+			let result = 2;
+			do {
+				currentTerm = term1 + term2;
+				if(currentTerm % 2 === 0) {
+					result += currentTerm;
+				}
+				term1 = term2;
+				term2 = currentTerm;
+			} while(currentTerm < 4000000)
+			
+			finish = window.performance.now();
+			
+			function getResultWithCommas(val) {
+            	let resultStr = val.split("").reverse().map((o, i, a) => (i % 3 === 0) ? `${o},` : o).reverse().join("");
+				return resultStr.endsWith(",") ? resultStr.slice(0, -1) : resultStr;
+			}
+			
+			document.getElementById("result").innerHTML = `The sum of the even-valued terms in the Fibonacci sequence whose values do not exceed four million is ${getResultWithCommas(result.toString())}`;
+			document.getElementById("time").innerHTML = `Problem Solved In: ${(finish - start)}ms`;
+		</script>
+	</body>
+</html>

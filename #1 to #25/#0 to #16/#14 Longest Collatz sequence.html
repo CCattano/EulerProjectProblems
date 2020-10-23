@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+	<head></head>
+	<body>
+		<label style="white-space: pre-wrap;">
+The following iterative sequence is defined for the set of positive integers:
+
+		when n is even: n → n/2
+		when n is odd: n → 3n + 1
+
+Using the rules above and starting with 13, we generate the following sequence:
+
+		13 → 40 → 20 → 10 → 5 → 16 → 8 → 4 → 2 → 1
+
+The starting number, under one million, which produces the longest chain of numbers is:
+		</label>
+		<br/>
+		<label id="result"></label>
+		<br /><br />
+		<label id="result-L2"></label>
+		<br /><br />
+		<label id="time"></label>
+		<script>
+			var start = window.performance.now();
+			var finish;
+			function addCommas(val) {
+            	let resultStr = val.split("").reverse().map((o, i, a) => (i % 3 === 0) ? `${o},` : o).reverse().join("");
+				return resultStr.endsWith(",") ? resultStr.slice(0, -1) : resultStr;
+			}
+			function getTerms(startingNum, returnCount = true) {
+				let terms = returnCount ? 1 : [startingNum];
+				while(startingNum !== 1) {
+					if(startingNum % 2 === 0) {
+						startingNum /= 2;
+					} else {
+						startingNum = ((startingNum * 3) + 1);
+					}
+					returnCount ? terms++ : terms.push(startingNum);
+				}
+				return returnCount ? terms : terms.map(t => `${t}, `).join("").slice(0, -2);
+			}
+			var result = { "startingNum": 0, "termQty": 0 };
+			for(let i = 1000000; i > 1; i--) {
+				let termCount = getTerms(i);
+				if(termCount > result.termQty) {
+					result = {"startingNum": i, "termQty": termCount};
+				}
+			}
+			finish = window.performance.now();
+			document.getElementById("result").innerHTML = `<strong>${addCommas(result.startingNum.toString())}</strong> with <strong>${result.termQty} terms</strong> in its chain.`;
+			document.getElementById("result-L2").innerText = `It's terms are:\n\n${getTerms(result.startingNum, false)}`;
+			document.getElementById("time").innerText = `Problem Solved In: ${(finish - start)}ms`;
+		</script>
+	</body>
+</html>

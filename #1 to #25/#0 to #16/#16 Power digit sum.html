@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+	<head></head>
+	<body>
+		<label id="result"></label>
+		<br />
+		<br />
+		<label id="time"></label>
+		<script>
+			console.clear();
+			var start = window.performance.now();
+			var finish;
+			
+			//2^1000 can be represented as (2^50)^20
+			const twoPowFifty = `${Math.pow(2, 50)}`;
+			var twoPowOneThousand = twoPowFifty;
+			for(let i = 1; i < 20; i++) {
+			    twoPowOneThousand = multiplyStrings(twoPowOneThousand, twoPowFifty);
+			}
+			
+			function multiplyStrings(value1, value2) {
+				let lenDiff = value1.length - value2.length
+				if(lenDiff > 0) {
+					value2 = `${new Array(lenDiff).fill("0").join("")}${value2}`;
+				} else if(lenDiff < 0) {
+					value1 = `${new Array(Math.abs(lenDiff)).fill("0").join("")}${value1}`;
+				}
+				let topNumArr = value1.split("").reverse();
+				let bottomNumArr = value2.split("").reverse();
+				let results = [];
+				let remainder = 0;
+				for(let i = 0; i < bottomNumArr.length; i++) {
+					let currentTerm = parseInt(bottomNumArr[i]);
+					let digits = new Array(i).fill("0");
+					for(let ni = 0; ni < topNumArr.length; ni++) {
+						let multiplier = parseInt(topNumArr[ni]);
+						let digit = `${(currentTerm * multiplier) + remainder}`;
+						let haveRemainder = digit.length > 1 && topNumArr.length - 1 !== ni;
+						remainder = haveRemainder ? parseInt(digit.substring(0, digit.length - 1)) : 0;
+						digits.unshift(haveRemainder ? digit.charAt(digit.length - 1) : digit);
+					}
+					results.push(digits.join(""));
+				}
+				let result = results.reduce((a, cv) => addStrings(a, cv), "0");
+				let firstNum = result.split("").findIndex(num => num !== "0");
+				return result.substring(firstNum, result.length);
+			}
+			
+			function addStrings(value1, value2) {
+				let lenDiff = value1.length - value2.length
+				if(lenDiff > 0) {
+					value2 = `${new Array(lenDiff).fill("0").join("")}${value2}`;
+				} else if(lenDiff < 0) {
+					value1 = `${new Array(Math.abs(lenDiff)).fill("0").join("")}${value1}`;
+				}
+				let numArr1 = value1.split("").reverse();
+				let numArr2 = value2.split("").reverse();
+				let result = [];
+				let remainder = false;
+				for(let i = 0; i < numArr1.length; i++) {
+					let val1 = remainder ? parseInt(numArr1[i]) + 1 : parseInt(numArr1[i]);
+					let val2 = parseInt(numArr2[i]);
+					let digit = `${val1 + val2}`;
+					remainder = digit.length === 2;
+					result.unshift(remainder ? digit.charAt(1) : digit);
+				}
+				result = `${remainder ? "1" : ""}${result.join("")}`;
+				return result;
+			}
+			
+			let result = twoPowOneThousand.split("").reduce((a, cv) => a += parseInt(cv), 0);
+			
+			finish = window.performance.now();
+			
+			function getResultWithCommas(val) {
+            	let resultStr = val.split("").reverse().map((o, i, a) => (i % 3 === 0) ? `${o},` : o).reverse().join("");
+				return resultStr.endsWith(",") ? resultStr.slice(0, -1) : resultStr;
+			}
+			
+			/*
+			//Using BigInt. Feels like cheating tbh.
+			var finish;
+			var start = window.performance.now();
+			
+			var result = BigInt(2 ** 1000).toString().split("").reduce((a, cv) => a += parseInt(cv), 0);	
+			
+			finish = window.performance.now();
+			*/
+			
+			document.getElementById("result").innerHTML = `The sum of the digits of the number 2^1000 is ${getResultWithCommas(result.toString())}`;
+			document.getElementById("time").innerHTML = `Problem Solved In: ${(finish - start)}ms`;
+		</script>
+	</body>
+</html>

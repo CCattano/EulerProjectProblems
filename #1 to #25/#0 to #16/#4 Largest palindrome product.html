@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+	<head></head>
+	<body>
+		<label id="result-L1"></label>
+		<br />
+		<br />
+		<label id="result-L2"></label>	
+		<br />
+		<br />
+		<label id="time"></label>
+		<script>
+			console.clear();
+			var start = window.performance.now();
+			var finish;
+			
+			function isPalindrome(num) {
+				let halfwayPoint = (num.length / 2);
+				let firstHalf = num.toString().slice(0, halfwayPoint);
+				let secondHalf = num.toString().slice(halfwayPoint);
+				return firstHalf === secondHalf.split("").reverse().join("");
+			}
+			
+			function filterByFactors(palindromes) {
+				let result = [];
+				palindromes.forEach(p => {
+					for(let i = 100; i <= 999; i++) {
+						if(p % i === 0 && (p / i).toString().length === 3) {
+							result.push({"palindrome": p, "factor1": i, "factor2": (p / i)});
+							return;
+						}
+					}
+				});
+				return result;
+			}
+			
+			function identifyPalindromes() {
+				let result = [];
+				let lowerLimit = 100 * 100;
+				let upperLimit = 999 * 999;
+	
+				for(let i = lowerLimit; i < upperLimit; i++) {
+					//Palindrome can only be even numbered in length.
+					let valToCheck = i.toString();
+					let firstAndLastMatch = valToCheck.charAt(0) === valToCheck.charAt(valToCheck.length - 1);
+					let secondAndSecondToLastMatch = valToCheck.charAt(1) === valToCheck.charAt(valToCheck.length - 2);
+					if(firstAndLastMatch && secondAndSecondToLastMatch && valToCheck.length % 2 === 0) {
+						if(isPalindrome(valToCheck))
+						{
+							result.push(i);
+						}
+					}
+				}
+				return result;
+			}
+			
+			var palindromes = filterByFactors(identifyPalindromes());
+			var largestValidPalindrome = Math.max(...palindromes.map(o => o.palindrome));
+			var result = palindromes.find(o => o.palindrome === largestValidPalindrome);
+			this.finish = window.performance.now();
+			
+			document.getElementById("result-L1").innerHTML = `Largest palindrome able to be made by two 3-digit numbers is ${this.result.palindrome}`;
+			document.getElementById("result-L2").innerHTML = `Made from ${this.result.factor1} * ${this.result.factor2}`;
+			document.getElementById("time").innerHTML = `Problem Solved In: ${(this.finish - this.start)}ms`;
+		</script>
+	</body>
+</html>

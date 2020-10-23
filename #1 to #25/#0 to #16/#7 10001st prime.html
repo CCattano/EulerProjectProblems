@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+	<head></head>
+	<body>
+		<label id="result"></label>
+		<br />
+		<br />
+		<label id="time"></label>
+		<script>
+			console.clear();
+			var start = window.performance.now();
+			var finish;
+			
+			var count = 1;
+			var i = 3;
+			var result;
+			while(count < 10001)
+			{
+				let dividedEvenly = false;
+				for(let ni = 2; ni < i; ni++) {
+					if(i % ni === 0) {
+						dividedEvenly = true;
+						break;
+					}
+				}
+				if(!dividedEvenly) {
+					count++;
+				}
+				if(count === 10001) {
+					this.finish = window.performance.now();
+					result = i;
+				}
+				i++;
+			}
+			
+			function getResultWithCommas() {
+            	let commaSeparatedResult = result.toString().split("").reverse().map((o, i, a) => (i % 3 === 0) ? `${o},` : o).reverse().join("");
+				return commaSeparatedResult.endsWith(",") ? commaSeparatedResult.slice(0, -1) : commaSeparatedResult;
+			}
+			
+			document.getElementById("result").innerHTML = `10,001st prime number is ${getResultWithCommas()}`;
+			document.getElementById("time").innerHTML = `Problem Solved In: ${(this.finish - this.start)}ms`;
+		</script>
+	</body>
+</html>
